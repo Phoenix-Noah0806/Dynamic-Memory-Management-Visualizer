@@ -7,7 +7,8 @@ class MemoryManager:
     def malloc(self, size):
         """Allocate a block of memory of the given size."""
         if size <= 0 or size > self.heap_size:
-            return None
+            raise ValueError("Invalid size for allocation")
+            
 
         
         start = 0
@@ -23,14 +24,13 @@ class MemoryManager:
                         start = i + 1
                         break
                 if free_size >= size:
-                    # Allocate the block
                     for i in range(start, start + size):
                         self.heap[i] = "ALLOCATED"
                     self.allocated_blocks[start] = size
                     return start
             else:
                 start += 1
-        return None  
+        raise MemoryError("Not enough memory available")  
 
     def free(self, start):
         """Deallocate a block of memory."""
