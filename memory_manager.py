@@ -45,3 +45,24 @@ class MemoryManager:
     def get_heap_status(self):
         """Return the current state of the heap."""
         return self.heap
+    def detect_fragmentation(self):
+        """Detect fragmentation in the heap."""
+        free_blocks = []
+        start = 0
+        while start < self.heap_size:
+            if self.heap[start] is None:
+                free_size = 0
+                for i in range(start, self.heap_size):
+                    if self.heap[i] is None:
+                        free_size += 1
+                    else:
+                        break
+                free_blocks.append((start, free_size))
+                start += free_size
+            else:
+                start += 1
+        return free_blocks
+
+    def detect_memory_leaks(self):
+        """Detect memory leaks (allocated but unreachable blocks)."""
+        return self.allocated_blocks
